@@ -2,25 +2,33 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-#define FONT_PATH "/Users/marina/Desktop/Projects/Collision_detection/Resourses/novem___.ttf"
-#define EXIT_TEXTURE_PATH "/Users/marina/Desktop/Projects/Collision_detection/Resourses/exit_button.png"
+#define FONT_PATH "Resourses/novem___.ttf"
+#define EXIT_TEXTURE_PATH "Resourses/exit_button.png"
+#define WINDOW_WIDTH 700
+#define WINDOW_HEIGHT 500
+
 
 int main(int, char const**)
 {
-    sf::RenderWindow window(sf::VideoMode(700, 500), "Collision detection", sf::Style::Default);
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Collision detection", sf::Style::Default);
     
     sf::Font font;
     if (!font.loadFromFile(FONT_PATH)) { std::cout << "Can't find the font file." << std::endl; }
     
-    sf::Text heading("Collision detection", font, 50);
-    heading.setColor(sf::Color::White);
-    heading.setPosition(109, 100);
+    sf::Text heading("Collision detection", font, 55);
+    heading.setFillColor(sf::Color::White);
+    heading.setOrigin(heading.getLocalBounds().width / 2, heading.getLocalBounds().height / 2);
+    heading.setPosition(WINDOW_WIDTH / 2, 140);
     
-    sf::Texture exit_texture;
-    if (!exit_texture.loadFromFile(EXIT_TEXTURE_PATH)) { std::cout << "Can't find an exit texture image." << std::endl; }
+    sf::Text start_button("Start", font, 45);
+    start_button.setFillColor(sf::Color::White);
+    start_button.setOrigin(start_button.getLocalBounds().width / 2, start_button.getLocalBounds().height / 2);
+    start_button.setPosition(WINDOW_WIDTH / 2, 280);
     
-    sf::Sprite exit_button(exit_texture);
-    exit_button.setPosition(205, 280);
+    sf::Text exit_button("Exit", font, 45);
+    exit_button.setFillColor(sf::Color::White);
+    exit_button.setOrigin(exit_button.getLocalBounds().width / 2, exit_button.getLocalBounds().height / 2);
+    exit_button.setPosition(WINDOW_WIDTH / 2, 350);
     
     while (window.isOpen()) {
         
@@ -35,14 +43,32 @@ int main(int, char const**)
                     break;
                 }
                     
+                case sf::Event::MouseMoved: {
+                    auto vec = sf::Mouse::getPosition(window);
+                    sf::Vector2f vecf{static_cast<float>(vec.x), static_cast<float>(vec.y)};
+                    if (exit_button.getGlobalBounds().contains(vecf)) {
+                        exit_button.setScale(0.9, 0.9);
+                    }
+                    if (start_button.getGlobalBounds().contains(vecf)) {
+                        start_button.setScale(0.9, 0.9);
+                    }
+                    if (!exit_button.getGlobalBounds().contains(vecf)) {
+                        exit_button.setScale(1, 1);
+                    }
+                    if (!start_button.getGlobalBounds().contains(vecf)) {
+                        start_button.setScale(1, 1);
+                    }
+                    break;
+                }
+                    
                 default:
                     break;
             }
             
             window.clear(sf::Color::Black);
             window.draw(heading);
+            window.draw(start_button);
             window.draw(exit_button);
-            //draw
             window.display();
         }
     }
