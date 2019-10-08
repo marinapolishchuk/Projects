@@ -14,6 +14,8 @@ int main(int, char const**)
     
     StartMenuSc start_menu_sc;
     Scenes.push_back(&start_menu_sc);
+    SecondMenuSc second_menu_sc;
+    Scenes.push_back(&second_menu_sc);
     
     while (scene >= 0) {
         scene = Scenes[scene]->Run(App);

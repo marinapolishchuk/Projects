@@ -1,6 +1,5 @@
 #include "start_menu_sc.hpp"
 
-
 StartMenuSc::StartMenuSc(void) { }
 
 int StartMenuSc::Run(sf::RenderWindow &App) {
@@ -60,11 +59,17 @@ int StartMenuSc::Run(sf::RenderWindow &App) {
                 case sf::Event::MouseButtonPressed: {
                     
                     if(event.mouseButton.button == sf::Mouse::Left) {
+                        
                         if(exit_button.getGlobalBounds().contains(vecf)) {
                             return (-1);
                         }
+                        
+                        if(start_button.getGlobalBounds().contains(vecf)) {
+                            return 1;
+                        }
+                        
                     }
-                    
+                    break;
                 }
                     
             }
