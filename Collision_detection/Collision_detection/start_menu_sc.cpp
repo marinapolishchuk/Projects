@@ -30,6 +30,9 @@ int StartMenuSc::Run(sf::RenderWindow &App) {
         
         while(App.pollEvent(event)) {
             
+            auto vec = sf::Mouse::getPosition(App);
+            sf::Vector2f vecf{static_cast<float>(vec.x), static_cast<float>(vec.y)};
+            
             switch (event.type) {
                     
                 case sf::Event::Closed: {
@@ -38,8 +41,7 @@ int StartMenuSc::Run(sf::RenderWindow &App) {
                 }
                     
                 case sf::Event::MouseMoved: {
-                    auto vec = sf::Mouse::getPosition(App);
-                    sf::Vector2f vecf{static_cast<float>(vec.x), static_cast<float>(vec.y)};
+                    
                     if (exit_button.getGlobalBounds().contains(vecf)) {
                         exit_button.setScale(0.9, 0.9);
                     }
@@ -55,8 +57,16 @@ int StartMenuSc::Run(sf::RenderWindow &App) {
                     break;
                 }
                     
-                default:
-                    break;
+                case sf::Event::MouseButtonPressed: {
+                    
+                    if(event.mouseButton.button == sf::Mouse::Left) {
+                        if(exit_button.getGlobalBounds().contains(vecf)) {
+                            return (-1);
+                        }
+                    }
+                    
+                }
+                    
             }
         
         }

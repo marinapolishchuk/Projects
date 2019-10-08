@@ -5,6 +5,7 @@
 #include "cScene.hpp"
 
 #include "start_menu_sc.hpp"
+#include "second_menu_sc.hpp"
 #include "interactive_mode_sc.hpp"
 
 #endif /* scenes_hpp */
