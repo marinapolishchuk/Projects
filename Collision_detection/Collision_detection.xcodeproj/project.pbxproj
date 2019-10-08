@@ -7,11 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9C093F33234C0C5A00D5F039 /* start_menu_sc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C093F31234C0C5A00D5F039 /* start_menu_sc.cpp */; };
+		9C093F36234C0C7A00D5F039 /* interactive_mode_sc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C093F34234C0C7A00D5F039 /* interactive_mode_sc.cpp */; };
 		9C20DBAE234585BF00062220 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C20DBAD234585BF00062220 /* main.cpp */; };
 		9C20DBBE2345862D00062220 /* exit_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C20DBBD2345862D00062220 /* exit_button.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9C093F2C234C0AB700D5F039 /* cScene.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = cScene.hpp; sourceTree = "<group>"; };
+		9C093F2F234C0B3100D5F039 /* scenes.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = scenes.hpp; sourceTree = "<group>"; };
+		9C093F31234C0C5A00D5F039 /* start_menu_sc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = start_menu_sc.cpp; sourceTree = "<group>"; };
+		9C093F32234C0C5A00D5F039 /* start_menu_sc.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = start_menu_sc.hpp; sourceTree = "<group>"; };
+		9C093F34234C0C7A00D5F039 /* interactive_mode_sc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = interactive_mode_sc.cpp; sourceTree = "<group>"; };
+		9C093F35234C0C7A00D5F039 /* interactive_mode_sc.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = interactive_mode_sc.hpp; sourceTree = "<group>"; };
 		9C20DBA5234585BF00062220 /* Collision_detection.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Collision_detection.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C20DBA9234585BF00062220 /* Collision_detection-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Collision_detection-Info.plist"; sourceTree = "<group>"; };
 		9C20DBAD234585BF00062220 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -50,8 +58,14 @@
 			isa = PBXGroup;
 			children = (
 				9C20DBAD234585BF00062220 /* main.cpp */,
-				9C20DBAF234585BF00062220 /* Resources */,
+				9C093F2F234C0B3100D5F039 /* scenes.hpp */,
+				9C093F2C234C0AB700D5F039 /* cScene.hpp */,
+				9C093F32234C0C5A00D5F039 /* start_menu_sc.hpp */,
+				9C093F31234C0C5A00D5F039 /* start_menu_sc.cpp */,
+				9C093F34234C0C7A00D5F039 /* interactive_mode_sc.cpp */,
+				9C093F35234C0C7A00D5F039 /* interactive_mode_sc.hpp */,
 				9C20DBA8234585BF00062220 /* Supporting Files */,
+				9C20DBAF234585BF00062220 /* Resources */,
 			);
 			path = Collision_detection;
 			sourceTree = "<group>";
@@ -161,7 +175,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C093F33234C0C5A00D5F039 /* start_menu_sc.cpp in Sources */,
 				9C20DBAE234585BF00062220 /* main.cpp in Sources */,
+				9C093F36234C0C7A00D5F039 /* interactive_mode_sc.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
