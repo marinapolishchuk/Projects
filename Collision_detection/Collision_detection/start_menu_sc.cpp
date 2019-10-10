@@ -1,6 +1,6 @@
 #include "start_menu_sc.hpp"
 
-StartMenuSc::StartMenuSc(void) { }
+StartMenuSc::StartMenuSc() { }
 
 int StartMenuSc::Run(sf::RenderWindow &App) {
     
@@ -83,7 +83,5 @@ int StartMenuSc::Run(sf::RenderWindow &App) {
         App.display();
         
     }
-    
     return (-1);
-    
 }

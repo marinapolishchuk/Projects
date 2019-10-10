@@ -1,6 +1,6 @@
 #include "second_menu_sc.hpp"
 
-SecondMenuSc::SecondMenuSc(void) {}
+SecondMenuSc::SecondMenuSc() {}
 
 int SecondMenuSc::Run(sf::RenderWindow &App) {
     
@@ -73,7 +73,7 @@ int SecondMenuSc::Run(sf::RenderWindow &App) {
                     if(event.mouseButton.button == sf::Mouse::Left) {
                         
                         if(interactive_mode_button.getGlobalBounds().contains(vecf)) {
-                            return (-1); //temorarily
+                            return 2; 
                         }
                         
                         if(demo_mode_button.getGlobalBounds().contains(vecf)) {
