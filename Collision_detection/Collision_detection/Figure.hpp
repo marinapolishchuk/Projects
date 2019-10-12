@@ -20,25 +20,26 @@ public:
         Rectangle,
         Triangle
     } type;
+    virtual FigureType getType();
 };
 
 class Circle : public Figure {
 private:
     sf::CircleShape circle;
-    Figure::FigureType type;
 public:
     Circle();
     void setCircle(sf::CircleShape&);
+    virtual FigureType getType() override;
     sf::CircleShape& getCircle();
 };
 
 class Rectangle : public Figure {
 private:
     sf::RectangleShape rect;
-    Figure::FigureType type;
 public:
     Rectangle();
     void setRect(sf::RectangleShape&);
+    virtual FigureType getType() override;
     sf::RectangleShape& getRect();
 };
 

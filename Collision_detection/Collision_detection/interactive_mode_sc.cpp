@@ -62,14 +62,14 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                     
                     for (int i = 0; i < figures.size(); ++i) {
                         
-                        if(figures[i]->type == Figure::FigureType::Circle) {
+                        if(figures[i]->getType() == Figure::FigureType::Circle) {
                             Circle* c = dynamic_cast<Circle*>(figures[i]);
                             if(c != nullptr && c->getCircle().getGlobalBounds().contains(vecf) && figure_clicked_indx == i) {
                                 c->getCircle().setPosition(sf::Mouse::getPosition(App).x, sf::Mouse::getPosition(App).y);
                             }
                         }
                     
-                        if(figures[i]->type == Figure::FigureType::Rectangle) {
+                        if(figures[i]->getType() == Figure::FigureType::Rectangle) {
                             Rectangle* r = dynamic_cast<Rectangle*>(figures[i]);
                             if(r != nullptr && r->getRect().getGlobalBounds().contains(vecf) && figure_clicked_indx == i) {
                                 r->getRect().setPosition(sf::Mouse::getPosition(App).x, sf::Mouse::getPosition(App).y);
@@ -88,13 +88,13 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                         }
                         
                         for (int i = 0; i < figures.size(); ++i) {
-                             if(figures[i]->type == Figure::FigureType::Circle) {
+                             if(figures[i]->getType() == Figure::FigureType::Circle) {
                                  Circle* c = dynamic_cast<Circle*>(figures[i]);
                                  if(c != nullptr && c->getCircle().getGlobalBounds().contains(vecf)) {
                                      figure_clicked_indx = i;
                                  }
                              }
-                            if(figures[i]->type == Figure::FigureType::Rectangle) {
+                            if(figures[i]->getType() == Figure::FigureType::Rectangle) {
                                 Rectangle* r = dynamic_cast<Rectangle*>(figures[i]);
                                 if(r != nullptr && r->getRect().getGlobalBounds().contains(vecf)) {
                                     figure_clicked_indx = i;
@@ -147,11 +147,11 @@ int IntModeSc::Run(sf::RenderWindow &App) {
             App.draw(t_tip);
         }
         for (int i = 0; i < figures.size(); ++i) {
-            if(figures[i]->type == Figure::FigureType::Circle) {
+            if(figures[i]->getType() == Figure::FigureType::Circle) {
                 Circle* c = dynamic_cast<Circle*>(figures[i]);
                 if(c != nullptr) { App.draw(c->getCircle()); }
             }
-            if(figures[i]->type == Figure::FigureType::Rectangle) {
+            if(figures[i]->getType() == Figure::FigureType::Rectangle) {
                 Rectangle* r = dynamic_cast<Rectangle*>(figures[i]);
                 if(r != nullptr) { App.draw(r->getRect()); }
             }
