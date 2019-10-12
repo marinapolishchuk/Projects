@@ -31,11 +31,10 @@ int IntModeSc::Run(sf::RenderWindow &App) {
     t_tip.setPosition(WINDOW_WIDTH - 15, 90);
     
     int tip_clicks = 0;
-
-    std::vector<sf::CircleShape> circles;
-    int indx_of_clicked = -1;
-    std::vector<sf::RectangleShape> rectangles;
-
+    
+    std::vector<Figure*> figures;
+    int figure_clicked_indx = -1;
+    
     while(running) {
         
         while(App.pollEvent(event)) {
@@ -46,6 +45,9 @@ int IntModeSc::Run(sf::RenderWindow &App) {
             switch (event.type) {
                     
                 case sf::Event::Closed: {
+                    for (int i = 0; i < figures.size(); ++i) {
+                        delete figures[i];
+                    }
                     return (-1);
                     break;
                 }
@@ -58,11 +60,21 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                         help_button.setScale(1, 1);
                     }
                     
-                    for (int i = 0; i < circles.size(); ++i) {
-                        if(circles[i].getGlobalBounds().contains(vecf) && indx_of_clicked == i) {
-                            circles[i].setPosition(sf::Mouse::getPosition(App).x, sf::Mouse::getPosition(App).y);
+                    for (int i = 0; i < figures.size(); ++i) {
+                        
+                        if(figures[i]->type == Figure::FigureType::Circle) {
+                            Circle* c = dynamic_cast<Circle*>(figures[i]);
+                            if(c != nullptr && c->getCircle().getGlobalBounds().contains(vecf) && figure_clicked_indx == i) {
+                                c->getCircle().setPosition(sf::Mouse::getPosition(App).x, sf::Mouse::getPosition(App).y);
+                            }
                         }
-
+                    
+                        if(figures[i]->type == Figure::FigureType::Rectangle) {
+                            Rectangle* r = dynamic_cast<Rectangle*>(figures[i]);
+                            if(r != nullptr && r->getRect().getGlobalBounds().contains(vecf) && figure_clicked_indx == i) {
+                                r->getRect().setPosition(sf::Mouse::getPosition(App).x, sf::Mouse::getPosition(App).y);
+                            }
+                        }
                     }
 
                     break;
@@ -70,12 +82,23 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                 
                 case sf::Event::MouseButtonPressed: {
                     if(event.mouseButton.button == sf::Mouse::Left) {
+                        
                         if(help_button.getGlobalBounds().contains(vecf)) {
                             tip_clicks++;
                         }
-                        for (int i = 0; i < circles.size(); ++i) {
-                            if(circles[i].getGlobalBounds().contains(vecf)) {
-                                indx_of_clicked = i;
+                        
+                        for (int i = 0; i < figures.size(); ++i) {
+                             if(figures[i]->type == Figure::FigureType::Circle) {
+                                 Circle* c = dynamic_cast<Circle*>(figures[i]);
+                                 if(c != nullptr && c->getCircle().getGlobalBounds().contains(vecf)) {
+                                     figure_clicked_indx = i;
+                                 }
+                             }
+                            if(figures[i]->type == Figure::FigureType::Rectangle) {
+                                Rectangle* r = dynamic_cast<Rectangle*>(figures[i]);
+                                if(r != nullptr && r->getRect().getGlobalBounds().contains(vecf)) {
+                                    figure_clicked_indx = i;
+                                }
                             }
                         }
                     }
@@ -84,8 +107,8 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                     
                 case sf::Event::MouseButtonReleased: {
                     if(event.mouseButton.button == sf::Mouse::Left) {
-                        for (int i = 0; i < circles.size(); ++i) {
-                            indx_of_clicked = -1;
+                        for (int i = 0; i < figures.size(); ++i) {
+                            figure_clicked_indx = -1;
                         }
                     }
                     break;
@@ -96,12 +119,24 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                         sf::CircleShape circle(rand() % 60 + 30);
                         circle.setFillColor(sf::Color(rand() % 256, rand() % 256, rand() % 256));
                         circle.setOrigin(circle.getRadius(), circle.getRadius());
-                        circles.push_back(circle);
+                        Circle* c = new Circle;
+                        c->setCircle(circle);
+                        figures.push_back(c);
+                    }
+                    if(event.key.code == sf::Keyboard::R) {
+                        sf::RectangleShape rect({static_cast<float>(rand() % 40 + 60), static_cast<float>(rand() % 40 + 60)});
+                        rect.setFillColor(sf::Color(rand() % 256, rand() % 256, rand() % 256));
+                        rect.setOrigin(rect.getSize().x / 2, rect.getSize().y / 2);
+                        Rectangle* r = new Rectangle;
+                        r->setRect(rect);
+                        figures.push_back(r);
                     }
                     break;
                 }
                     
+                    
             }
+            
         }        
         
         App.clear(sf::Color::Black);
@@ -111,8 +146,15 @@ int IntModeSc::Run(sf::RenderWindow &App) {
             App.draw(r_tip);
             App.draw(t_tip);
         }
-        for (auto &a : circles) {
-            App.draw(a);
+        for (int i = 0; i < figures.size(); ++i) {
+            if(figures[i]->type == Figure::FigureType::Circle) {
+                Circle* c = dynamic_cast<Circle*>(figures[i]);
+                if(c != nullptr) { App.draw(c->getCircle()); }
+            }
+            if(figures[i]->type == Figure::FigureType::Rectangle) {
+                Rectangle* r = dynamic_cast<Rectangle*>(figures[i]);
+                if(r != nullptr) { App.draw(r->getRect()); }
+            }
         }
         App.display();
     }

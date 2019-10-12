@@ -23,6 +23,7 @@ int main(int, char const**)
     while (scene >= 0) {
         scene = Scenes[scene]->Run(App);
     }
+    App.close();
     
     return EXIT_SUCCESS;
 }

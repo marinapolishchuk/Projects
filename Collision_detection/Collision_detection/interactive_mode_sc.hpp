@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "cScene.hpp"
-#include <SFML/Graphics.hpp>
+#include "Figure.hpp"
 
 #define WINDOW_WIDTH 700
 #define WINDOW_HEIGHT 500
