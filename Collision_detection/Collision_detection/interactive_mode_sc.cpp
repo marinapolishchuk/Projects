@@ -1,4 +1,5 @@
 #include "interactive_mode_sc.hpp"
+#include <vector>
 
 IntModeSc::IntModeSc() { }
 
@@ -30,6 +31,11 @@ int IntModeSc::Run(sf::RenderWindow &App) {
     t_tip.setOrigin(t_tip.getLocalBounds().width, 0);
     t_tip.setPosition(WINDOW_WIDTH - 15, 90);
     
+    sf::Text window_clear("Clear", font, 25);
+    window_clear.setFillColor(sf::Color::White);
+    window_clear.setOrigin(window_clear.getLocalBounds().width / 2, window_clear.getLocalBounds().height / 2);
+    window_clear.setPosition(WINDOW_WIDTH - 40, WINDOW_HEIGHT - 23);
+    
     int tip_clicks = 0;
     
     std::vector<Figure*> figures;
@@ -58,6 +64,12 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                     }
                     if(!help_button.getGlobalBounds().contains(vecf)) {
                         help_button.setScale(1, 1);
+                    }
+                    if(window_clear.getGlobalBounds().contains(vecf)) {
+                        window_clear.setScale(0.9, 0.9);
+                    }
+                    if(!window_clear.getGlobalBounds().contains(vecf)) {
+                        window_clear.setScale(1, 1);
                     }
                     
                     for (int i = 0; i < figures.size(); ++i) {
@@ -101,6 +113,13 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                                 }
                             }
                         }
+                        
+                        if(window_clear.getGlobalBounds().contains(vecf)) {
+                            for (int i = 0; i < figures.size(); ++i) {
+                                delete figures[i];
+                            }
+                            figures.clear();
+                        }
                     }
                     break;
                 }
@@ -133,10 +152,7 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                     }
                     break;
                 }
-                    
-                    
             }
-            
         }        
         
         App.clear(sf::Color::Black);
@@ -146,6 +162,7 @@ int IntModeSc::Run(sf::RenderWindow &App) {
             App.draw(r_tip);
             App.draw(t_tip);
         }
+        App.draw(window_clear);
         for (int i = 0; i < figures.size(); ++i) {
             if(figures[i]->getType() == Figure::FigureType::Circle) {
                 Circle* c = dynamic_cast<Circle*>(figures[i]);
