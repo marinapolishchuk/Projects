@@ -1,5 +1,4 @@
 #include "interactive_mode_sc.hpp"
-#include <vector>
 
 IntModeSc::IntModeSc() { }
 
@@ -138,6 +137,7 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                         sf::CircleShape circle(rand() % 60 + 30);
                         circle.setFillColor(sf::Color(rand() % 256, rand() % 256, rand() % 256));
                         circle.setOrigin(circle.getRadius(), circle.getRadius());
+                        circle.setPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
                         Circle* c = new Circle;
                         c->setCircle(circle);
                         figures.push_back(c);
@@ -146,6 +146,7 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                         sf::RectangleShape rect({static_cast<float>(rand() % 40 + 60), static_cast<float>(rand() % 40 + 60)});
                         rect.setFillColor(sf::Color(rand() % 256, rand() % 256, rand() % 256));
                         rect.setOrigin(rect.getSize().x / 2, rect.getSize().y / 2);
+                        rect.setPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
                         Rectangle* r = new Rectangle;
                         r->setRect(rect);
                         figures.push_back(r);

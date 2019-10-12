@@ -1,6 +1,8 @@
 #ifndef cScene_hpp
 #define cScene_hpp
 
+#include <iostream>
+#include <vector>
 #include <SFML/Graphics.hpp>
 
 class cScene {

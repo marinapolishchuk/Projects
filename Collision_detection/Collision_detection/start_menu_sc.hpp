@@ -1,7 +1,6 @@
 #ifndef start_menu_sc_hpp
 #define start_menu_sc_hpp
 
-#include <iostream>
 #include "cScene.hpp"
 
 #define WINDOW_WIDTH 700

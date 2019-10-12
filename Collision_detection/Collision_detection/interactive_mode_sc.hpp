@@ -1,7 +1,6 @@
 #ifndef interactive_mode_sc_hpp
 #define interactive_mode_sc_hpp
 
-#include <iostream>
 #include "cScene.hpp"
 #include "Figure.hpp"
 

@@ -1,5 +1,3 @@
-#include <iostream>
-#include <SFML/Graphics.hpp>
 #include "scenes.hpp"
 
 #define WINDOW_WIDTH 700
