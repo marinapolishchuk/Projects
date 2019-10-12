@@ -30,6 +30,11 @@ int IntModeSc::Run(sf::RenderWindow &App) {
     t_tip.setOrigin(t_tip.getLocalBounds().width, 0);
     t_tip.setPosition(WINDOW_WIDTH - 15, 90);
     
+    sf::Text back_button("Back", font, 25);
+    back_button.setFillColor(sf::Color::White);
+    back_button.setOrigin(back_button.getLocalBounds().width / 2, back_button.getLocalBounds().height / 2);
+    back_button.setPosition(WINDOW_WIDTH - 45, WINDOW_HEIGHT - 53);
+    
     sf::Text window_clear("Clear", font, 25);
     window_clear.setFillColor(sf::Color::White);
     window_clear.setOrigin(window_clear.getLocalBounds().width / 2, window_clear.getLocalBounds().height / 2);
@@ -39,6 +44,9 @@ int IntModeSc::Run(sf::RenderWindow &App) {
     
     std::vector<Figure*> figures;
     int figure_clicked_indx = -1;
+    
+    const int figures_lim = 2;
+    int figures_count = 0;
     
     while(running) {
         
@@ -69,6 +77,12 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                     }
                     if(!window_clear.getGlobalBounds().contains(vecf)) {
                         window_clear.setScale(1, 1);
+                    }
+                    if(back_button.getGlobalBounds().contains(vecf)) {
+                        back_button.setScale(0.9, 0.9);
+                    }
+                    if(!back_button.getGlobalBounds().contains(vecf)) {
+                        back_button.setScale(1, 1);
                     }
                     
                     for (int i = 0; i < figures.size(); ++i) {
@@ -119,6 +133,10 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                             }
                             figures.clear();
                         }
+                        
+                        if(back_button.getGlobalBounds().contains(vecf)) {
+                            return 1;
+                        }
                     }
                     break;
                 }
@@ -143,7 +161,7 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                         figures.push_back(c);
                     }
                     if(event.key.code == sf::Keyboard::R) {
-                        sf::RectangleShape rect({static_cast<float>(rand() % 40 + 60), static_cast<float>(rand() % 40 + 60)});
+                        sf::RectangleShape rect({static_cast<float>(rand() % 80 + 80), static_cast<float>(rand() % 80 + 80)});
                         rect.setFillColor(sf::Color(rand() % 256, rand() % 256, rand() % 256));
                         rect.setOrigin(rect.getSize().x / 2, rect.getSize().y / 2);
                         rect.setPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
@@ -163,6 +181,7 @@ int IntModeSc::Run(sf::RenderWindow &App) {
             App.draw(r_tip);
             App.draw(t_tip);
         }
+        App.draw(back_button);
         App.draw(window_clear);
         for (int i = 0; i < figures.size(); ++i) {
             if(figures[i]->getType() == Figure::FigureType::Circle) {
