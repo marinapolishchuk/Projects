@@ -2,7 +2,7 @@
 #define interactive_mode_sc_hpp
 
 #include "cScene.hpp"
-#include "Figure.hpp"
+#include "cFigure.hpp"
 
 #define WINDOW_WIDTH 700
 #define WINDOW_HEIGHT 500

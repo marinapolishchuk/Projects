@@ -1,4 +1,25 @@
 #include "interactive_mode_sc.hpp"
+#include <cmath>
+
+bool isCollision(Figure* figure1, Figure* figure2) {
+    
+    //both figures are circles
+    if(figure1->getType() == Figure::FigureType::Circle && figure2->getType() == Figure::FigureType::Circle) {
+        Circle* c1 = dynamic_cast<Circle*>(figure1);
+        Circle* c2 = dynamic_cast<Circle*>(figure2);
+        
+        float dx = std::abs(c1->getCircle().getPosition().x - c2->getCircle().getPosition().x);
+        float dy = std::abs(c1->getCircle().getPosition().y - c2->getCircle().getPosition().y);
+        
+        float dist = sqrt(dx*dx + dy*dy);
+        
+        float rad_dist = c1->getCircle().getRadius() + c2->getCircle().getRadius();
+        
+        if(dist <= rad_dist) { return true; }
+    }
+    
+    return false;
+}
 
 IntModeSc::IntModeSc() { }
 
@@ -155,7 +176,7 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                     if(event.key.code == sf::Keyboard::C) {
                         if(figures_count < FIGURES_LIM) {
                             sf::CircleShape circle(rand() % 60 + 30);
-                            circle.setFillColor(sf::Color(rand() % 256, rand() % 256, rand() % 256));
+                            circle.setFillColor(sf::Color::White);
                             circle.setOrigin(circle.getRadius(), circle.getRadius());
                             circle.setPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
                             Circle* c = new Circle;
@@ -179,17 +200,39 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                     break;
                 }
             }
-        }        
+        }
+        
+        if(figures_count == FIGURES_LIM) {
+            if(isCollision(figures[0], figures[1])) {
+                if(figures[0]->getType() == Figure::FigureType::Circle && figures[1]->getType() == Figure::FigureType::Circle) {
+                    Circle* c = dynamic_cast<Circle*>(figures[0]);
+                    Circle* d = dynamic_cast<Circle*>(figures[1]);
+                    c->getCircle().setFillColor(sf::Color(255, 0, 0, 160));
+                    d->getCircle().setFillColor(sf::Color(255, 0, 0, 160));
+                }
+            } else {
+                if(figures[0]->getType() == Figure::FigureType::Circle && figures[1]->getType() == Figure::FigureType::Circle) {
+                    Circle* c = dynamic_cast<Circle*>(figures[0]);
+                    Circle* d = dynamic_cast<Circle*>(figures[1]);
+                    c->getCircle().setFillColor(sf::Color::White);
+                    d->getCircle().setFillColor(sf::Color::White);
+                }
+            }
+        }
         
         App.clear(sf::Color::Black);
+        
         App.draw(help_button);
         if (tip_clicks % 2 == 1) {
             App.draw(c_tip);
             App.draw(r_tip);
             App.draw(t_tip);
         }
+        
         App.draw(window_clear);
+        
         App.draw(back_button);
+        
         for (int i = 0; i < figures.size(); ++i) {
             if(figures[i]->getType() == Figure::FigureType::Circle) {
                 Circle* c = dynamic_cast<Circle*>(figures[i]);
@@ -200,6 +243,7 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                 if(r != nullptr) { App.draw(r->getRect()); }
             }
         }
+        
         App.display();
     }
 }

@@ -1,16 +1,7 @@
-//
-//  Figure.hpp
-//  Collision_detection
-//
-//  Created by  Марина on 10/12/19.
-//  Copyright © 2019 Marina Polishchuk. All rights reserved.
-//
-
-#ifndef Figure_hpp
-#define Figure_hpp
+#ifndef cFigure_hpp
+#define cFigure_hpp
 
 #include <SFML/Graphics.hpp>
-
 
 class Figure {
 public:
@@ -43,11 +34,4 @@ public:
     sf::RectangleShape& getRect();
 };
 
-//class Triangle : public Figure {
-//private:
-//    Figure::FigureType type;
-//public:
-//    Triangle() : type(Figure::FigureType::Triangle) {}
-//};
-
-#endif /* Figure_hpp */
+#endif /* cFigure_hpp */

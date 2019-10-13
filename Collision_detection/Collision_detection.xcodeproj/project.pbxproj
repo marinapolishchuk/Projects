@@ -11,7 +11,7 @@
 		9C093F36234C0C7A00D5F039 /* interactive_mode_sc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C093F34234C0C7A00D5F039 /* interactive_mode_sc.cpp */; };
 		9C093F39234C217100D5F039 /* second_menu_sc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C093F37234C217100D5F039 /* second_menu_sc.cpp */; };
 		9C20DBAE234585BF00062220 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C20DBAD234585BF00062220 /* main.cpp */; };
-		9CF813FC2351F7E80070CF2B /* Figure.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9CF813FA2351F7E80070CF2B /* Figure.cpp */; };
+		9CCF04122353ADB3003DE3CD /* cFigure.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9CCF04112353ADB3003DE3CD /* cFigure.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,8 +27,8 @@
 		9C20DBA9234585BF00062220 /* Collision_detection-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Collision_detection-Info.plist"; sourceTree = "<group>"; };
 		9C20DBAD234585BF00062220 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		9C20DBBF2345863400062220 /* novem___.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "novem___.ttf"; path = "Resourses/novem___.ttf"; sourceTree = SOURCE_ROOT; };
-		9CF813FA2351F7E80070CF2B /* Figure.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Figure.cpp; sourceTree = "<group>"; };
-		9CF813FB2351F7E80070CF2B /* Figure.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Figure.hpp; sourceTree = "<group>"; };
+		9CCF04102353ADAB003DE3CD /* cFigure.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = cFigure.hpp; sourceTree = "<group>"; };
+		9CCF04112353ADB3003DE3CD /* cFigure.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cFigure.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,8 +70,8 @@
 				9C093F37234C217100D5F039 /* second_menu_sc.cpp */,
 				9C093F35234C0C7A00D5F039 /* interactive_mode_sc.hpp */,
 				9C093F34234C0C7A00D5F039 /* interactive_mode_sc.cpp */,
-				9CF813FB2351F7E80070CF2B /* Figure.hpp */,
-				9CF813FA2351F7E80070CF2B /* Figure.cpp */,
+				9CCF04102353ADAB003DE3CD /* cFigure.hpp */,
+				9CCF04112353ADB3003DE3CD /* cFigure.cpp */,
 				9C20DBA8234585BF00062220 /* Supporting Files */,
 				9C20DBAF234585BF00062220 /* Resources */,
 			);
@@ -182,9 +182,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C093F39234C217100D5F039 /* second_menu_sc.cpp in Sources */,
-				9CF813FC2351F7E80070CF2B /* Figure.cpp in Sources */,
 				9C093F33234C0C5A00D5F039 /* start_menu_sc.cpp in Sources */,
 				9C20DBAE234585BF00062220 /* main.cpp in Sources */,
+				9CCF04122353ADB3003DE3CD /* cFigure.cpp in Sources */,
 				9C093F36234C0C7A00D5F039 /* interactive_mode_sc.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

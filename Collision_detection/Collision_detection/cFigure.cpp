@@ -1,12 +1,4 @@
-//
-//  Figure.cpp
-//  Collision_detection
-//
-//  Created by  Марина on 10/12/19.
-//  Copyright © 2019 Marina Polishchuk. All rights reserved.
-//
-
-#include "Figure.hpp"
+#include "cFigure.hpp"
 
 Figure::~Figure() {}
 
