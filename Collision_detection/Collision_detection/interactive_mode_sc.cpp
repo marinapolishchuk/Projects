@@ -26,18 +26,50 @@ bool isCollision(Figure* figure1, Figure* figure2) {
         sf::RectangleShape rect1 = r1->getRect();
         sf::RectangleShape rect2 = r2->getRect();
         
-        bool c1 = (rect1.getPosition().x - rect1.getSize().x / 2 < rect2.getPosition().x + rect2.getSize().x / 2);
-        bool c2 = (rect1.getPosition().x + rect1.getSize().x / 2 > rect2.getPosition().x - rect2.getSize().x / 2);
-        bool c3 = (rect1.getPosition().y - rect1.getSize().y / 2 < rect2.getPosition().y + rect2.getSize().y / 2);
-        bool c4 = (rect1.getPosition().y + rect1.getSize().y / 2 > rect2.getPosition().y - rect2.getSize().y / 2);
+        bool c1 = (rect1.getPosition().x - rect1.getSize().x / 2 <= rect2.getPosition().x + rect2.getSize().x / 2);
+        bool c2 = (rect1.getPosition().x + rect1.getSize().x / 2 >= rect2.getPosition().x - rect2.getSize().x / 2);
+        bool c3 = (rect1.getPosition().y - rect1.getSize().y / 2 <= rect2.getPosition().y + rect2.getSize().y / 2);
+        bool c4 = (rect1.getPosition().y + rect1.getSize().y / 2 >= rect2.getPosition().y - rect2.getSize().y / 2);
 
         if (c1 && c2 && c3 && c4) { return true; }
     }
     
+    //circle and rectangle
+    if(figure1->getType() == Figure::FigureType::Circle && figure2->getType() == Figure::FigureType::Rectangle) {
+        Circle* c = dynamic_cast<Circle*>(figure1);
+        Rectangle* r = dynamic_cast<Rectangle*>(figure2);
+        
+        sf::CircleShape circle = c->getCircle();
+        sf::RectangleShape rect = r->getRect();
+        
+        float nearest_x = std::max(rect.getPosition().x - rect.getSize().x / 2, std::min(circle.getPosition().x, rect.getPosition().x + rect.getSize().x / 2));
+        float nearest_y = std::max(rect.getPosition().y - rect.getSize().y / 2, std::min(circle.getPosition().y, rect.getPosition().y + rect.getSize().y / 2));
+        
+        float dist_x = circle.getPosition().x - nearest_x;
+        float dist_y = circle.getPosition().y - nearest_y;
+        bool condition = (dist_x * dist_x + dist_y * dist_y) < (circle.getRadius() * circle.getRadius());
+        
+        if (condition) { return true; }
+        
+    }
     
-    //circ rect
-    // . . . //
-    
+    if(figure1->getType() == Figure::FigureType::Rectangle && figure2->getType() == Figure::FigureType::Circle) {
+        Circle* c = dynamic_cast<Circle*>(figure2);
+        Rectangle* r = dynamic_cast<Rectangle*>(figure1);
+
+        sf::CircleShape circle = c->getCircle();
+        sf::RectangleShape rect = r->getRect();
+
+        float nearest_x = std::max(rect.getPosition().x - rect.getSize().x / 2, std::min(circle.getPosition().x, rect.getPosition().x + rect.getSize().x / 2));
+        float nearest_y = std::max(rect.getPosition().y - rect.getSize().y / 2, std::min(circle.getPosition().y, rect.getPosition().y + rect.getSize().y / 2));
+        
+        float dist_x = circle.getPosition().x - nearest_x;
+        float dist_y = circle.getPosition().y - nearest_y;
+        bool condition = (dist_x * dist_x + dist_y * dist_y) < (circle.getRadius() * circle.getRadius());
+        
+        if (condition) { return true; }
+    }
+
     return false;
 }
 
@@ -195,7 +227,7 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                 case sf::Event::KeyPressed: {
                     if(event.key.code == sf::Keyboard::C) {
                         if(figures_count < FIGURES_LIM) {
-                            sf::CircleShape circle(rand() % 60 + 30);
+                            sf::CircleShape circle(rand() % 70 + 10);
                             circle.setFillColor(sf::Color::White);
                             circle.setOrigin(circle.getRadius(), circle.getRadius());
                             circle.setPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
@@ -207,7 +239,7 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                     }
                     if(event.key.code == sf::Keyboard::R) {
                         if(figures_count < FIGURES_LIM) {
-                            sf::RectangleShape rect({static_cast<float>(rand() % 80 + 80), static_cast<float>(rand() % 80 + 80)});
+                            sf::RectangleShape rect({static_cast<float>(rand() % 120 + 60), static_cast<float>(rand() % 120 + 60)});
                             rect.setFillColor(sf::Color::White);
                             rect.setOrigin(rect.getSize().x / 2, rect.getSize().y / 2);
                             rect.setPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
@@ -236,6 +268,19 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                     c->getRect().setFillColor(sf::Color(0, 255, 0, 160));
                     d->getRect().setFillColor(sf::Color(0, 255, 0, 160));
                 }
+                if(figures[0]->getType() == Figure::FigureType::Circle && figures[1]->getType() == Figure::FigureType::Rectangle) {
+                    Circle* c = dynamic_cast<Circle*>(figures[0]);
+                    Rectangle* d = dynamic_cast<Rectangle*>(figures[1]);
+                    c->getCircle().setFillColor(sf::Color(0, 0, 255, 160));
+                    d->getRect().setFillColor(sf::Color(0, 0, 255, 160));
+                }
+                if(figures[0]->getType() == Figure::FigureType::Rectangle && figures[1]->getType() == Figure::FigureType::Circle) {
+                    Rectangle* c = dynamic_cast<Rectangle*>(figures[0]);
+                    Circle* d = dynamic_cast<Circle*>(figures[1]);
+                    c->getRect().setFillColor(sf::Color(0, 255, 0, 160));
+                    d->getCircle().setFillColor(sf::Color(0, 255, 0, 160));
+                }
+                
             } else {
                 if(figures[0]->getType() == Figure::FigureType::Circle && figures[1]->getType() == Figure::FigureType::Circle) {
                     Circle* c = dynamic_cast<Circle*>(figures[0]);
@@ -249,6 +294,19 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                     c->getRect().setFillColor(sf::Color::White);
                     d->getRect().setFillColor(sf::Color::White);
                 }
+                if(figures[0]->getType() == Figure::FigureType::Circle && figures[1]->getType() == Figure::FigureType::Rectangle) {
+                    Circle* c = dynamic_cast<Circle*>(figures[0]);
+                    Rectangle* d = dynamic_cast<Rectangle*>(figures[1]);
+                    c->getCircle().setFillColor(sf::Color::White);
+                    d->getRect().setFillColor(sf::Color::White);
+                }
+                if(figures[0]->getType() == Figure::FigureType::Rectangle && figures[1]->getType() == Figure::FigureType::Circle) {
+                    Rectangle* c = dynamic_cast<Rectangle*>(figures[0]);
+                    Circle* d = dynamic_cast<Circle*>(figures[1]);
+                    c->getRect().setFillColor(sf::Color::White);
+                    d->getCircle().setFillColor(sf::Color::White);
+                }
+                
             }
         }
         
