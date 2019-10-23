@@ -3,6 +3,7 @@
 
 #include "cScene.hpp"
 #include "cFigure.hpp"
+#include "fCollision.cpp"
 
 #define WINDOW_WIDTH 700
 #define WINDOW_HEIGHT 500

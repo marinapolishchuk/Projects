@@ -1,79 +1,24 @@
 #include "interactive_mode_sc.hpp"
 #include <cmath>
-
-bool isCollision(Figure* figure1, Figure* figure2) {
-    
-    //both figures are circles
-    if(figure1->getType() == Figure::FigureType::Circle && figure2->getType() == Figure::FigureType::Circle) {
-        Circle* c1 = dynamic_cast<Circle*>(figure1);
-        Circle* c2 = dynamic_cast<Circle*>(figure2);
-        
-        float dx = std::abs(c1->getCircle().getPosition().x - c2->getCircle().getPosition().x);
-        float dy = std::abs(c1->getCircle().getPosition().y - c2->getCircle().getPosition().y);
-        
-        float dist = sqrt(dx*dx + dy*dy);
-        
-        float rad_dist = c1->getCircle().getRadius() + c2->getCircle().getRadius();
-        
-        if(dist <= rad_dist) { return true; }
-    }
-    
-    //both figures are rectangles
-    if(figure1->getType() == Figure::FigureType::Rectangle && figure2->getType() == Figure::FigureType::Rectangle) {
-        Rectangle* r1 = dynamic_cast<Rectangle*>(figure1);
-        Rectangle* r2 = dynamic_cast<Rectangle*>(figure2);
-        
-        sf::RectangleShape rect1 = r1->getRect();
-        sf::RectangleShape rect2 = r2->getRect();
-        
-        bool c1 = (rect1.getPosition().x - rect1.getSize().x / 2 <= rect2.getPosition().x + rect2.getSize().x / 2);
-        bool c2 = (rect1.getPosition().x + rect1.getSize().x / 2 >= rect2.getPosition().x - rect2.getSize().x / 2);
-        bool c3 = (rect1.getPosition().y - rect1.getSize().y / 2 <= rect2.getPosition().y + rect2.getSize().y / 2);
-        bool c4 = (rect1.getPosition().y + rect1.getSize().y / 2 >= rect2.getPosition().y - rect2.getSize().y / 2);
-
-        if (c1 && c2 && c3 && c4) { return true; }
-    }
-    
-    //circle and rectangle
-    if(figure1->getType() == Figure::FigureType::Circle && figure2->getType() == Figure::FigureType::Rectangle) {
-        Circle* c = dynamic_cast<Circle*>(figure1);
-        Rectangle* r = dynamic_cast<Rectangle*>(figure2);
-        
-        sf::CircleShape circle = c->getCircle();
-        sf::RectangleShape rect = r->getRect();
-        
-        float nearest_x = std::max(rect.getPosition().x - rect.getSize().x / 2, std::min(circle.getPosition().x, rect.getPosition().x + rect.getSize().x / 2));
-        float nearest_y = std::max(rect.getPosition().y - rect.getSize().y / 2, std::min(circle.getPosition().y, rect.getPosition().y + rect.getSize().y / 2));
-        
-        float dist_x = circle.getPosition().x - nearest_x;
-        float dist_y = circle.getPosition().y - nearest_y;
-        bool condition = (dist_x * dist_x + dist_y * dist_y) < (circle.getRadius() * circle.getRadius());
-        
-        if (condition) { return true; }
-        
-    }
-    
-    if(figure1->getType() == Figure::FigureType::Rectangle && figure2->getType() == Figure::FigureType::Circle) {
-        Circle* c = dynamic_cast<Circle*>(figure2);
-        Rectangle* r = dynamic_cast<Rectangle*>(figure1);
-
-        sf::CircleShape circle = c->getCircle();
-        sf::RectangleShape rect = r->getRect();
-
-        float nearest_x = std::max(rect.getPosition().x - rect.getSize().x / 2, std::min(circle.getPosition().x, rect.getPosition().x + rect.getSize().x / 2));
-        float nearest_y = std::max(rect.getPosition().y - rect.getSize().y / 2, std::min(circle.getPosition().y, rect.getPosition().y + rect.getSize().y / 2));
-        
-        float dist_x = circle.getPosition().x - nearest_x;
-        float dist_y = circle.getPosition().y - nearest_y;
-        bool condition = (dist_x * dist_x + dist_y * dist_y) < (circle.getRadius() * circle.getRadius());
-        
-        if (condition) { return true; }
-    }
-
-    return false;
-}
+//#include "ImGui/imgui.h"
+//#include "ImGui/imgui-SFML.h"
 
 IntModeSc::IntModeSc() { }
+
+void createButton(sf::Text &text, sf::Color color, sf::Vector2f origin, sf::Vector2f pos) {
+    text.setFillColor(color);
+    text.setOrigin(origin);
+    text.setPosition(pos);
+}
+
+void changeScaleIfMouseOnButton(sf::Text& button, const sf::Vector2f& mouse_pos) {
+    if(button.getGlobalBounds().contains(mouse_pos)) {
+        button.setScale(0.9, 0.9);
+    }
+    if(!button.getGlobalBounds().contains(mouse_pos)) {
+        button.setScale(1, 1);
+    }
+}
 
 int IntModeSc::Run(sf::RenderWindow &App) {
     
@@ -84,35 +29,23 @@ int IntModeSc::Run(sf::RenderWindow &App) {
     if (!font.loadFromFile(FONT_PATH)) { std::cout << "Can't find the font file." << std::endl; }
     
     sf::Text help_button("?", font, 30);
-    help_button.setFillColor(sf::Color::White);
-    help_button.setOrigin(help_button.getLocalBounds().width, 0);
-    help_button.setPosition(WINDOW_WIDTH - 15, 5);
+    createButton(help_button, sf::Color::White, {help_button.getLocalBounds().width, 0}, {WINDOW_WIDTH - 15, 5});
     
     sf::Text c_tip("Press C to draw a circle.", font, 15);
-    c_tip.setFillColor(sf::Color::White);
-    c_tip.setOrigin(c_tip.getLocalBounds().width, 0);
-    c_tip.setPosition(WINDOW_WIDTH - 15, 40);
+    createButton(c_tip, sf::Color::White, {c_tip.getLocalBounds().width, 0}, {WINDOW_WIDTH - 15, 40});
     
     sf::Text r_tip("Press R to draw a rectangle.", font, 15);
-    r_tip.setFillColor(sf::Color::White);
-    r_tip.setOrigin(r_tip.getLocalBounds().width, 0);
-    r_tip.setPosition(WINDOW_WIDTH - 15, 65);
+    createButton(r_tip, sf::Color::White, {r_tip.getLocalBounds().width, 0}, {WINDOW_WIDTH - 15, 65});
     
     sf::Text t_tip("Press T to draw a triangle.", font, 15);
-    t_tip.setFillColor(sf::Color::White);
-    t_tip.setOrigin(t_tip.getLocalBounds().width, 0);
-    t_tip.setPosition(WINDOW_WIDTH - 15, 90);
-    
+    createButton(t_tip, sf::Color::White, {t_tip.getLocalBounds().width, 0}, {WINDOW_WIDTH - 15, 90});
+
     sf::Text window_clear("Clear", font, 25);
-    window_clear.setFillColor(sf::Color::White);
-    window_clear.setOrigin(window_clear.getLocalBounds().width / 2, window_clear.getLocalBounds().height / 2);
-    window_clear.setPosition(WINDOW_WIDTH - 40, WINDOW_HEIGHT - 23);
-    
+    createButton(window_clear, sf::Color::White, {window_clear.getLocalBounds().width / 2, window_clear.getLocalBounds().height / 2}, {WINDOW_WIDTH - 40, WINDOW_HEIGHT - 23});
+
     sf::Text back_button("Back", font, 25);
-    back_button.setFillColor(sf::Color::White);
-    back_button.setOrigin(back_button.getLocalBounds().width / 2, back_button.getLocalBounds().height / 2);
-    back_button.setPosition(WINDOW_WIDTH - 45, WINDOW_HEIGHT - 53);
-    
+    createButton(back_button, sf::Color::White, {back_button.getLocalBounds().width / 2, back_button.getLocalBounds().height / 2}, {WINDOW_WIDTH - 45, WINDOW_HEIGHT - 53});
+
     int tip_clicks = 0;
     
     std::vector<Figure*> figures;
@@ -139,25 +72,10 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                 }
                     
                 case sf::Event::MouseMoved: {
-                    if(help_button.getGlobalBounds().contains(vecf)) {
-                        help_button.setScale(0.9, 0.9);
-                    }
-                    if(!help_button.getGlobalBounds().contains(vecf)) {
-                        help_button.setScale(1, 1);
-                    }
-                    if(window_clear.getGlobalBounds().contains(vecf)) {
-                        window_clear.setScale(0.9, 0.9);
-                    }
-                    if(!window_clear.getGlobalBounds().contains(vecf)) {
-                        window_clear.setScale(1, 1);
-                    }
-                    if(back_button.getGlobalBounds().contains(vecf)) {
-                        back_button.setScale(0.9, 0.9);
-                    }
-                    if(!back_button.getGlobalBounds().contains(vecf)) {
-                        back_button.setScale(1, 1);
-                    }
-                    
+                    changeScaleIfMouseOnButton(help_button, vecf);
+                    changeScaleIfMouseOnButton(window_clear, vecf);
+                    changeScaleIfMouseOnButton(back_button, vecf);
+
                     for (int i = 0; i < figures.size(); ++i) {
                         
                         if(figures[i]->getType() == Figure::FigureType::Circle) {
@@ -277,8 +195,8 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                 if(figures[0]->getType() == Figure::FigureType::Rectangle && figures[1]->getType() == Figure::FigureType::Circle) {
                     Rectangle* c = dynamic_cast<Rectangle*>(figures[0]);
                     Circle* d = dynamic_cast<Circle*>(figures[1]);
-                    c->getRect().setFillColor(sf::Color(0, 255, 0, 160));
-                    d->getCircle().setFillColor(sf::Color(0, 255, 0, 160));
+                    c->getRect().setFillColor(sf::Color(0, 0, 255, 160));
+                    d->getCircle().setFillColor(sf::Color(0, 0, 255, 160));
                 }
                 
             } else {
@@ -309,7 +227,6 @@ int IntModeSc::Run(sf::RenderWindow &App) {
                 
             }
         }
-        
         App.clear(sf::Color::Black);
         
         App.draw(help_button);
@@ -320,7 +237,6 @@ int IntModeSc::Run(sf::RenderWindow &App) {
         }
         
         App.draw(window_clear);
-        
         App.draw(back_button);
         
         for (int i = 0; i < figures.size(); ++i) {
