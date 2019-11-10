@@ -77,7 +77,7 @@ int SecondMenuSc::Run(sf::RenderWindow &App) {
                         }
                         
                         if(demo_mode_button.getGlobalBounds().contains(vecf)) {
-                            return (-1); //temporarily
+                            return 3;
                         }
                         
                         if(back_button.getGlobalBounds().contains(vecf)) {

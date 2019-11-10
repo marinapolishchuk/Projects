@@ -16,6 +16,8 @@ int main(int, char const**)
     Scenes.push_back(&second_menu_sc);
     IntModeSc interactive_mode_sc;
     Scenes.push_back(&interactive_mode_sc);
+    DemoModeSc demo_mode_sc;
+    Scenes.push_back(&demo_mode_sc);
     
     
     while (scene >= 0) {

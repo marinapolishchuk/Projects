@@ -1,7 +1,5 @@
 #include "interactive_mode_sc.hpp"
 #include <cmath>
-//#include "ImGui/imgui.h"
-//#include "ImGui/imgui-SFML.h"
 
 IntModeSc::IntModeSc() { }
 
