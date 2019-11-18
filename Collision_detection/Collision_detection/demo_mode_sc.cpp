@@ -1,42 +1,69 @@
 #include "demo_mode_sc.hpp"
 
-class Ball {
-private:
-    sf::CircleShape* c;
-    float px, py;
-    float vx, vy;
-public:
-    Ball(sf::Color col, float r) : c(new sf::CircleShape) {
-        c->setRadius(r);
-        c->setFillColor(col);
-        c->setOrigin(c->getPosition().x + c->getRadius(), c->getPosition().y + c->getRadius());
-        px = c->getPosition().x;
-        py = c->getPosition().y;
-    }
-    ~Ball() {}
-    sf::CircleShape getCircle() { return *c; }
-    sf::CircleShape* getACircle() { return c; }
-    void setPos(float x, float y) {
-        px = x; py = y;
-        c->setPosition(px, py);
-    }
-    void setVelocity(float x, float y) { vx = x; vy = y; }
-    void update() {
-        px = c->getPosition().x;
-        py = c->getPosition().y;
-        px += vx;
-        py += vy;
-        c->setPosition(px, py);
-    }
-    float getRadius() {
-        return c->getRadius();
-    }
-};
-
 float rand_FloatRange(float a, float b)
 {
     return ((b - a) * ((float)rand() / RAND_MAX)) + a;
 }
+
+class Ball : public sf::Drawable {
+private:
+    sf::CircleShape* c;
+    float px, py;
+    float vx, vy;
+    
+    void init() {
+        c->setRadius(rand() % 40 + 20);
+        c->setFillColor(sf::Color::White);
+        c->setOrigin(c->getPosition().x + c->getRadius(), c->getPosition().y + c->getRadius());
+        c->setPosition(rand() % (int)(WINDOW_WIDTH - 2 * c->getRadius()) + c->getRadius(), rand() % (int)(WINDOW_HEIGHT - 2 * c->getRadius()) + c->getRadius());
+        vx = rand_FloatRange(-0.1f, 0.1f);
+        vy = rand_FloatRange(-0.1f, 0.1f);
+        px = c->getPosition().x;
+        py = c->getPosition().y;
+        
+    }
+public:
+    //constructor, destructor
+    Ball() : c(new sf::CircleShape) { init(); }
+    Ball(const Ball& other)
+    {
+        c = new sf::CircleShape(*(other.c));
+        px = other.px;
+        py = other.py;
+        vx = other.vx;
+        vy = other.vy;
+    }
+    ~Ball() { delete c; }
+    
+    void draw(sf::RenderTarget& window, sf::RenderStates states) const override {
+        window.draw(*c, states);
+    }
+    
+    //getters
+    sf::CircleShape* getCircle() { return c; }
+    float getRadius() { return c->getRadius(); }
+    
+    //update
+    void update() {
+        px += vx;
+        py += vy;
+        c->setPosition(px, py);
+        
+        // no colliding with window borders
+//        if (px < 0) { px += WINDOW_WIDTH; }
+//        if (px >= WINDOW_WIDTH) { px -= WINDOW_WIDTH; }
+//        if (py < 0) { py += WINDOW_HEIGHT; }
+//        if (py >= WINDOW_HEIGHT) { py -= WINDOW_HEIGHT; }
+        
+        
+        // collision with window borders
+        if ((px - c->getRadius() - 1) < 0) { px += 1; vx = -vx; }
+        if ((px + c->getRadius() + 1) > WINDOW_WIDTH) { px -= 1; vx = -vx;}
+        if ((py - c->getRadius() - 1) < 0) { py += 1; vy = -vy; }
+        if ((py + c->getRadius() + 1) > WINDOW_HEIGHT) { py -= 1; vy = -vy;}
+    }
+    
+};
 
 DemoModeSc::DemoModeSc() { }
 
@@ -48,12 +75,11 @@ int DemoModeSc::Run(sf::RenderWindow &App) {
     std::vector<Ball> circles;
 
     int amount_of_circles = 10;
+    circles.reserve(amount_of_circles);
 
     for (int i = 0; i < amount_of_circles; ++i) {
-        Ball c(sf::Color::White, rand() % 40 + 20);
-        c.setPos(rand() % (int)(WINDOW_WIDTH - 2 * c.getRadius()) + c.getRadius(), rand() % (int)(WINDOW_HEIGHT - 2 * c.getRadius()) + c.getRadius());
-        c.setVelocity(rand_FloatRange(-0.1f, 0.1f), rand_FloatRange(-0.1f, 0.1f));
-        circles.push_back(c);
+        Ball b;
+        circles.push_back(b);
     }
     
     while(running) {
@@ -65,9 +91,6 @@ int DemoModeSc::Run(sf::RenderWindow &App) {
             
             switch (event.type) {
                 case sf::Event::Closed: {
-                    for (int i = 0; i < amount_of_circles; ++i) {
-                        delete circles[i].getACircle();
-                    }
                     return (-1);
                     break;
                 }
@@ -81,7 +104,7 @@ int DemoModeSc::Run(sf::RenderWindow &App) {
             circles[i].update();
         }
         for (int i = 0; i < amount_of_circles; ++i) {
-            App.draw(circles[i].getCircle());
+            App.draw(circles[i]);
         }
         App.display();
         
